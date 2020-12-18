@@ -16,7 +16,8 @@ const { db } = require('./models/budget_schema');
 var ObjectId = mongoose.Types.ObjectId;
 
 
-let url = 'mongodb://localhost:27017/personal_budgetdb';
+//let url = 'mongodb://localhost:27017/personal_budgetdb';
+let url = 'mongodb+srv://admin:ChKQ6LuBda9FBsML@cluster0.ecdro.mongodb.net/personal_budgetdb';
 
 // const mongoose = require("mongoose")
 // const budgetModel = require('./models/budget_schema')
@@ -53,7 +54,7 @@ app.post('/insertBudget', (req,res)=>{
     mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology:true})
        .then(()=>{
           const newBudget = ({
-           title: req.body.title,
+           title: req.body.title.toUpperCase(),
            cost: req.body.cost,
            color: req.body.color,
            username: req.body.username

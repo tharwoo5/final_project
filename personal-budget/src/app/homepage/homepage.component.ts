@@ -23,6 +23,11 @@ export class HomepageComponent implements OnInit {
     ],
     labels: []
 };
+  amountSpent: number;
+  displayBudgetAmount: any;
+  amountBudgetLeft: number;
+
+
 
   constructor(public http: HttpClient, private profileJson:ProfileComponent) {}
 
@@ -30,19 +35,31 @@ export class HomepageComponent implements OnInit {
     this.http.get('http://localhost:3000/budget')
     .subscribe((res: any) => {
         console.log(res);
+        let totalData = 0;
         for (let i = 0; i < res.length; i++) {
           // this.dataSource.datasets[0].data[i] = res.myBudget[i].budget;
           this.dataSource.datasets[0].data[i] = res[i].cost;
           // this.dataSource.labels[i] = res.myBudget[i].title;
-          this.dataSource.labels[i] = res[i].title;
           this.dataSource.datasets[0].backgroundColor[i] = res[i].color;
+          this.dataSource.labels[i] = res[i].title;
+          //this.totalData += res[i].cost;
+          const temp = res[i].cost
+          totalData = totalData + temp;
+          this.amountSpent = totalData;
+
+
         }
+        console.log(totalData);
+        this.createTotal();
         this.createPieChart();
         this.createPolarAreaChart();
         this.createBarChart();
       });
   }
 
+createTotal(): void {
+
+   }
 
 createPieChart(): void {
     // var ctx = document.getElementById('myChart').getContext('2d');
@@ -115,10 +132,17 @@ removeOldCost(): void {
 
 
 
-  //window.location.reload();
+  window.location.reload();
   console.log(this.profileJson)
 }
 
+budgetAmount(): void{
+  const budgetAmount = (document.getElementById('Budget_Amount')as HTMLTextAreaElement).value;
+  this.displayBudgetAmount = budgetAmount;
+
+  this.amountBudgetLeft = (this.displayBudgetAmount - this.amountSpent);
+
+}
 
 
 }
